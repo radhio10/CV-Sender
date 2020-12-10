@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".UI.InputFragment"
+    android:clipChildren="true"
+    android:descendantFocusability="afterDescendants"
+    android:fillViewport="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:hint="@string/applicant_s_name"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:inputType="text"
+                android:padding="20dp"/>
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:hint="@string/applicant_s_personal_mail"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:inputType="textEmailAddress"
+                android:padding="20dp"/>
+
+            <EditText
+                android:id="@+id/phone"
+                android:layout_width="match_parent"
+                android:hint="@string/applicant_s_phone"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:inputType="phone"
+                android:padding="20dp"/>
+
+            <EditText
+                android:id="@+id/full_address"
+                android:layout_width="match_parent"
+                android:hint="@string/applicant_s_full_address"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:inputType="text"
+                android:padding="20dp"/>
+
+            <EditText
+                android:id="@+id/name_of_university"
+                android:layout_width="match_parent"
+                android:hint="@string/applicant_s_varsity_name"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:inputType="text"
+                android:padding="20dp"/>
+
+            <EditText
+                android:id="@+id/graduation_year"
+                android:layout_width="match_parent"
+                android:hint="@string/applicant_s_graduation_year"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:inputType="number"
+                android:padding="20dp"/>
+
+            <EditText
+                android:id="@+id/cgpa"
+                android:layout_width="match_parent"
+                android:hint="@string/applicant_s_cgpa"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:inputType="number"
+                android:padding="20dp"/>
+
+            <EditText
+                android:id="@+id/experience_in_months"
+                android:layout_width="match_parent"
+                android:hint="@string/professional_working_experience_in_months"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:inputType="number"
+                android:padding="20dp"/>
+
+            <EditText
+                android:id="@+id/current_work_place_name"
+                android:layout_width="match_parent"
+                android:hint="@string/current_workplace_name"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:inputType="text"
+                android:padding="20dp"/>
+
+            <Spinner
+                android:id="@+id/applying_in"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"/>
+
+            <EditText
+                android:id="@+id/expected_salary"
+                android:layout_width="match_parent"
+                android:hint="@string/expected_salary"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:inputType="number"
+                android:padding="20dp"/>
+
+            <EditText
+                android:id="@+id/field_buzz_reference"
+                android:layout_width="match_parent"
+                android:hint="@string/refeence_name_from_field_buzz_if_any"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:inputType="textUri"
+                android:padding="20dp"/>
+
+            <EditText
+                android:id="@+id/github_project_url"
+                android:layout_width="match_parent"
+                android:hint="@string/developed_application_s_github_url"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:inputType="text"
+                android:padding="20dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/submit_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/submit"/>
+
+        </LinearLayout>
+
+</ScrollView>

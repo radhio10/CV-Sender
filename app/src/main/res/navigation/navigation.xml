@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.radhio.cvsender.UI.HomeFragment"
+        tools:layout="@layout/home_fragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_inputFragment"
+            app:destination="@id/inputFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/inputFragment"
+        android:name="com.radhio.cvsender.UI.InputFragment"
+        tools:layout="@layout/fragment_input" >
+        <action
+            android:id="@+id/action_inputFragment_to_binaryFileFragment"
+            app:destination="@id/binaryFileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/binaryFileFragment"
+        android:name="com.radhio.cvsender.UI.BinaryFileFragment"
+        tools:layout="@layout/fragment_binary_file" />
+</navigation>

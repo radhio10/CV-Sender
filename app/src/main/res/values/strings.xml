@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">CV Sender</string>
+
+    <!--  app api endpoint -->
+    <string name="API_BASE_URL">https://recruitment.fisdev.com</string>
+    <string name="user_name">user name</string>
+    <string name="password">password</string>
+    <string name="log_in">log in</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="applicant_s_name">Applicant\'s name</string>
+    <string name="developed_application_s_github_url">Developed application’s github URL</string>
+    <string name="refeence_name_from_field_buzz_if_any">Refeence name from Field Buzz if any</string>
+    <string name="expected_salary">Expected salary</string>
+    <string name="current_workplace_name">Current workplace name</string>
+    <string name="professional_working_experience_in_months">Professional working experience in months</string>
+    <string name="applicant_s_cgpa">Applicant\'s CGPA</string>
+    <string name="applicant_s_graduation_year">Applicant\'s graduation year</string>
+    <string name="applicant_s_varsity_name">Applicant\'s varsity name</string>
+    <string name="applicant_s_full_address">Applicant\'s full address</string>
+    <string name="applicant_s_phone">Applicant\'s phone</string>
+    <string name="applicant_s_personal_mail">Applicant\'s personal mail</string>
+    <string name="attachment">Attachment</string>
+    <string name="submit">Submit</string>
+</resources>
