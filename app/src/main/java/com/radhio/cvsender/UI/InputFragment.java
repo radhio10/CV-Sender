@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -21,16 +22,20 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.radhio.cvsender.Models.CV;
+import com.radhio.cvsender.Models.CVFileUpload;
 import com.radhio.cvsender.Models.Cv_file;
 import com.radhio.cvsender.R;
 import com.radhio.cvsender.Session.UserSession;
 import com.radhio.cvsender.Utils.Generator;
+import com.radhio.cvsender.ViewModel.HomeViewModel;
+import com.radhio.cvsender.ViewModel.InputViewModel;
 
 /**
  * Created by Azmia Hoque Radhio on 12/10/2020.
  */
 
 public class InputFragment extends Fragment {
+    InputViewModel inputViewModel;
     Button submitButton;
     EditText name,email,phone,fullAddress,nameOfUniversity,graduationYear,cgpa,experienceInMonths,
             currentWorkPlaceName,expectedSalary,fieldBuzzReference,githubProjectUrl;
@@ -49,6 +54,7 @@ public class InputFragment extends Fragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_input, container, false);
         session = new UserSession(requireContext());
+        inputViewModel = new ViewModelProvider(this).get(InputViewModel.class);
         submitButton = view.findViewById(R.id.submit_button);
         name = view.findViewById(R.id.name);
         email = view.findViewById(R.id.email);
@@ -70,7 +76,6 @@ public class InputFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Cv_file cv_file = new Cv_file();
         ArrayAdapter<String> zoneAdapter = new ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, applyPosition);
         zoneAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         applyingIn.setAdapter(zoneAdapter);
@@ -101,14 +106,15 @@ public class InputFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (submitForm()) {
-                    ValidationSucceed(cv_file);
+                    ValidationSucceed();
                 }
             }
         });
     }
 
-    private void ValidationSucceed(Cv_file cvFile) {
+    private void ValidationSucceed() {
         CV cv = new CV();
+        int length = Generator.tsyncIDGenerator().length();
         cv.setTsync_id(Generator.tsyncIDGenerator());
         cv.setName(userName);
         cv.setEmail(userEmail);
@@ -121,13 +127,15 @@ public class InputFragment extends Fragment {
         cv.setCgpa(CGPA);
         int experience = Integer.parseInt(userExperience);
         cv.setExperience_in_months(experience);
+        cv.setApplying_in(rule);
         cv.setCurrent_work_place_name(userWorkPlaceName);
         int salary = Integer.parseInt(userSalary);
         cv.setExpected_salary(salary);
         cv.setField_buzz_reference(userFieldBuzzRef);
         cv.setGithub_project_url(userProjectUrl);
-        cv.setCv_file(cvFile);
-        cvFile.setTsync_id(Generator.tsyncIDGenerator());
+        cv.setCv_file(new Cv_file());
+        Cv_file cvFile1 = cv.getCv_file();
+        cvFile1.setTsync_id(Generator.tsyncIDGenerator());
         long creationTime= Generator.onSpotTime();
         cv.setOn_spot_update_time(creationTime);
         if (session.getCreationTime() == 0){
@@ -135,24 +143,25 @@ public class InputFragment extends Fragment {
             session.setCreationTime(creationTime);
         }
         else {
-            cv.setOn_spot_creation_time(session.getCreationTime());
+            long oldCreationTIme = session.getCreationTime();
+            cv.setOn_spot_creation_time(oldCreationTIme);
         }
-
         SubmitData(cv);
     }
 
     public void SubmitData(CV cv) {
-//        dashboardPackageViewModel.addPackageOrder(packageOrder).observe(getViewLifecycleOwner(), new Observer<Integer>() {
-//            @Override
-//            public void onChanged(Integer status) {
-//                if (status == 1) {
+        inputViewModel.GetFileTokenId(cv,getContext()).observe(getViewLifecycleOwner(), new Observer<CVFileUpload>() {
+            @Override
+            public void onChanged(CVFileUpload cvFileUpload) {
+                if (cvFileUpload.getMessage().equals("")){
 //                    navController.navigate(R.id.binaryFileFragment);
-//                    Toast.makeText(getActivity(), "Validation Success!", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    submitError();
-//                }
-//            }
-//        });
+                    Toast.makeText(getActivity(), cvFileUpload.getId(), Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getActivity(), cvFileUpload.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private boolean submitForm() {

@@ -12,7 +12,6 @@ import retrofit2.http.POST;
  * Created by Azmia Hoque Radhio on 12/11/2020.
  */
 public interface IFetchId {
-    @FormUrlEncoded
     @POST("api/v0/recruiting-entities/")
     Call<CVFileUpload> GetFileId(@Body CV cv);
 }
