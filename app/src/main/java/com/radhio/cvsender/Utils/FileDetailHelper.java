@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.provider.OpenableColumns;
 
 import java.io.File;
+import java.util.Objects;
 
 /**
  * Created by Azmia Hoque Radhio on 12/11/2020.
@@ -18,7 +19,7 @@ public class FileDetailHelper {
             fileDetail = new FileDetail();
             // File Scheme.
             if (ContentResolver.SCHEME_FILE.equals(uri.getScheme())) {
-                File file = new File(uri.getPath());
+                File file = new File(Objects.requireNonNull(uri.getPath()));
                 fileDetail.fileName = file.getName();
                 fileDetail.fileSize = file.length();
             }

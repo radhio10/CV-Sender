@@ -9,5 +9,5 @@ import com.radhio.cvsender.R;
  */
 
 public class CVSenderInfo {
-    public static String BASE_URL= Resources.getSystem().getString(R.string.API_BASE_URL);
+    public static String BASE_URL= "https://recruitment.fisdev.com/";
 }

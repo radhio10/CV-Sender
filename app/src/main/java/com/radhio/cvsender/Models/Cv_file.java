@@ -1,4 +1,4 @@
-package com.radhio.cvsender.Model;
+package com.radhio.cvsender.Models;
 
 /**
  * Created by Azmia Hoque Radhio on 12/11/2020.

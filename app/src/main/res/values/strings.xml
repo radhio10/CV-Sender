@@ -2,7 +2,7 @@
     <string name="app_name">CV Sender</string>
 
     <!--  app api endpoint -->
-    <string name="API_BASE_URL">https://recruitment.fisdev.com</string>
+    <string name="API_BASE_URL">https://recruitment.fisdev.com/</string>
     <string name="user_name">user name</string>
     <string name="password">password</string>
     <string name="log_in">log in</string>

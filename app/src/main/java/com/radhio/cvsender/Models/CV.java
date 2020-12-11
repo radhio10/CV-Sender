@@ -1,4 +1,6 @@
-package com.radhio.cvsender.Model;
+package com.radhio.cvsender.Models;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Created by Azmia Hoque Radhio on 12/11/2020.
@@ -209,6 +211,7 @@ public class CV
         this.email = email;
     }
 
+    @NotNull
     @Override
     public String toString()
     {
