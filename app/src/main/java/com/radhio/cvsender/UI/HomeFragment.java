@@ -1,7 +1,6 @@
 package com.radhio.cvsender.UI;
 
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -22,8 +21,6 @@ import android.widget.Toast;
 import com.radhio.cvsender.Session.UserSession;
 import com.radhio.cvsender.ViewModel.HomeViewModel;
 import com.radhio.cvsender.R;
-
-import java.util.Objects;
 
 
 /**

@@ -9,7 +9,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.radhio.cvsender.Models.AccessToken;
-import com.radhio.cvsender.Models.CV;
 import com.radhio.cvsender.Models.CVFileUpload;
 import com.radhio.cvsender.Repository.Repository;
 import com.radhio.cvsender.Session.UserSession;
@@ -35,7 +34,7 @@ public class InputViewModel extends AndroidViewModel {
         this.fetchIdRepository = new Repository();
     }
 
-    public LiveData<CVFileUpload> GetFileTokenId(CV cv, Context context)
+    public LiveData<CVFileUpload> GetFileTokenId(String cv, Context context)
     {
         UserSession session = new UserSession(context);
         if(cvFileUploadMutableLiveData == null)
@@ -46,7 +45,7 @@ public class InputViewModel extends AndroidViewModel {
         return cvFileUploadMutableLiveData;
     }
 
-    private void FetchFileTokenId(AccessToken token, CV cv) {
+    private void FetchFileTokenId(AccessToken token, String cv) {
         fetchIdRepository.GetFileTokenId(token.getToken(), cv, new Callback<CVFileUpload>() {
             CVFileUpload cvFileUpload = new CVFileUpload();
             @Override

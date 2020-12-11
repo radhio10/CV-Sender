@@ -1,15 +1,8 @@
 package com.radhio.cvsender.Service;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.radhio.cvsender.Info.CVSenderInfo;
-
-import java.io.File;
 import java.util.concurrent.TimeUnit;
-
-import okhttp3.Cache;
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -30,15 +23,11 @@ public class ServiceGenerator {
             .writeTimeout(60, TimeUnit.SECONDS)
             .connectTimeout(6, TimeUnit.SECONDS);
 
-    private static Gson gson = new GsonBuilder()
-            .setLenient()
-            .create();
-
     protected static Retrofit.Builder builder =
             new Retrofit.Builder()
                     .client(httpClient.build())
                     .baseUrl(API_BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create(gson));
+                    .addConverterFactory(GsonConverterFactory.create());
 
     protected static Retrofit retrofit = builder.build();
 

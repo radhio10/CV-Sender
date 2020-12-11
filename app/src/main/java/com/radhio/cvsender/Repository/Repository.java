@@ -3,7 +3,6 @@ package com.radhio.cvsender.Repository;
 import com.radhio.cvsender.EndPoints.IAuthToken;
 import com.radhio.cvsender.EndPoints.IFetchId;
 import com.radhio.cvsender.Models.AccessToken;
-import com.radhio.cvsender.Models.CV;
 import com.radhio.cvsender.Models.CVFileUpload;
 import com.radhio.cvsender.Service.ServiceGenerator;
 
@@ -20,7 +19,7 @@ public class Repository {
         service.GetToken(username,password).enqueue(callback);
     }
 
-    public void GetFileTokenId(String Token, final CV cv, final Callback<CVFileUpload> cvFileUploadCallback)
+    public void GetFileTokenId(String Token, final String cv, final Callback<CVFileUpload> cvFileUploadCallback)
     {
         IFetchId service = ServiceGenerator.CreateService(IFetchId.class, Token);
         service.GetFileId(cv).enqueue(cvFileUploadCallback);

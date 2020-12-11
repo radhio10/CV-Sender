@@ -21,13 +21,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.radhio.cvsender.Models.CV;
 import com.radhio.cvsender.Models.CVFileUpload;
 import com.radhio.cvsender.Models.Cv_file;
 import com.radhio.cvsender.R;
 import com.radhio.cvsender.Session.UserSession;
 import com.radhio.cvsender.Utils.Generator;
-import com.radhio.cvsender.ViewModel.HomeViewModel;
 import com.radhio.cvsender.ViewModel.InputViewModel;
 
 /**
@@ -45,7 +45,7 @@ public class InputFragment extends Fragment {
     String[] applyPosition = {"Choose Position", "Mobile", "Backend"};
     private String rule;
     private String userName,userEmail, userPhone, userFullAddress, userUniversity, userGraduationYear,
-     userCGPA, userExperience, userWorkPlaceName, userSalary, userFieldBuzzRef, userProjectUrl;
+     userCGPA, userExperience, userWorkPlaceName, userSalary, userFieldBuzzRef, userProjectUrl ;
     UserSession session;
 
     @Override
@@ -113,43 +113,28 @@ public class InputFragment extends Fragment {
     }
 
     private void ValidationSucceed() {
-        CV cv = new CV();
-        int length = Generator.tsyncIDGenerator().length();
-        cv.setTsync_id(Generator.tsyncIDGenerator());
-        cv.setName(userName);
-        cv.setEmail(userEmail);
-        cv.setPhone(userPhone);
-        cv.setFull_address(userFullAddress);
-        cv.setName_of_university(userUniversity);
+        String tsyncID = Generator.tsyncIDGenerator();
         int graduationYear = Integer.parseInt(userGraduationYear);
-        cv.setGraduation_year(graduationYear);
-        double CGPA = Double.parseDouble(userCGPA);
-        cv.setCgpa(CGPA);
+        double cGPA = Double.parseDouble(userCGPA);
         int experience = Integer.parseInt(userExperience);
-        cv.setExperience_in_months(experience);
-        cv.setApplying_in(rule);
-        cv.setCurrent_work_place_name(userWorkPlaceName);
         int salary = Integer.parseInt(userSalary);
-        cv.setExpected_salary(salary);
-        cv.setField_buzz_reference(userFieldBuzzRef);
-        cv.setGithub_project_url(userProjectUrl);
-        cv.setCv_file(new Cv_file());
-        Cv_file cvFile1 = cv.getCv_file();
-        cvFile1.setTsync_id(Generator.tsyncIDGenerator());
-        long creationTime= Generator.onSpotTime();
-        cv.setOn_spot_update_time(creationTime);
+        String tsyncIDCVFile = Generator.tsyncIDGenerator();
+        long updateTime= Generator.onSpotTime();
+        long creationTime;
         if (session.getCreationTime() == 0){
-            cv.setOn_spot_creation_time(creationTime);
+            creationTime = updateTime;
             session.setCreationTime(creationTime);
         }
         else {
-            long oldCreationTIme = session.getCreationTime();
-            cv.setOn_spot_creation_time(oldCreationTIme);
+            creationTime = session.getCreationTime();
         }
-        SubmitData(cv);
+        CV cv = new CV(tsyncID,userName,userEmail,userPhone,userFullAddress,userUniversity,graduationYear,cGPA,experience,userWorkPlaceName,
+                rule,salary,userFieldBuzzRef,userProjectUrl,new Cv_file(tsyncIDCVFile),updateTime,creationTime);
+        String CVJson = new Gson().toJson(cv);
+        SubmitData(CVJson);
     }
 
-    public void SubmitData(CV cv) {
+    public void SubmitData(String cv) {
         inputViewModel.GetFileTokenId(cv,getContext()).observe(getViewLifecycleOwner(), new Observer<CVFileUpload>() {
             @Override
             public void onChanged(CVFileUpload cvFileUpload) {

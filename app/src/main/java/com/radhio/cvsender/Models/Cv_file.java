@@ -6,6 +6,10 @@ package com.radhio.cvsender.Models;
 public class Cv_file {
     private String tsync_id;
 
+    public Cv_file(String tsync_id) {
+        this.tsync_id = tsync_id;
+    }
+
     public String getTsync_id() {
         return tsync_id;
     }

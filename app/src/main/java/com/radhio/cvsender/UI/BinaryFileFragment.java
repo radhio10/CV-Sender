@@ -1,17 +1,13 @@
 package com.radhio.cvsender.UI;
 
 import android.app.Activity;
-import android.content.ClipData;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,11 +18,6 @@ import android.widget.TextView;
 
 import com.radhio.cvsender.R;
 import com.radhio.cvsender.Utils.FileDetailHelper;
-
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Azmia Hoque Radhio on 12/10/2020.
