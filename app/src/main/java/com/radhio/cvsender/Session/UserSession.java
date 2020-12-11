@@ -16,6 +16,7 @@ public class UserSession {
     private static final String PREF_NAME = "UserSessionPref";
     private static final String KEY_USER_NAME = "username";
     private static final String KEY_PASSWORD = "password";
+    private static final String KEY_TIME = "time";
     private static final String AUTH_TOKEN = "authToken";
 
     // Constructor
@@ -43,6 +44,15 @@ public class UserSession {
 
     public String  getUserPassword() {
         return pref.getString(KEY_PASSWORD, null);
+    }
+
+    public void setCreationTime(long time) {
+        editor.putLong(KEY_TIME, time);
+        editor.commit();
+    }
+
+    public long  getCreationTime() {
+        return pref.getLong(KEY_TIME,0 );
     }
 
     public void setAuthToken(AccessToken authToken) {

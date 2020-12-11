@@ -9,7 +9,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.radhio.cvsender.Models.AccessToken;
-import com.radhio.cvsender.Repository.TokenRepository;
+import com.radhio.cvsender.Repository.Repository;
 import com.radhio.cvsender.Session.UserSession;
 
 import org.jetbrains.annotations.NotNull;
@@ -21,27 +21,26 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HomeViewModel extends AndroidViewModel {
-    private TokenRepository tokenRepository;
-    private MutableLiveData<AccessToken> accessTokenLiveData;
+    private Repository tokenRepository;
+    private MutableLiveData<AccessToken> accessTokenMutableLiveData;
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
-        this.tokenRepository = new TokenRepository();
+        this.tokenRepository = new Repository();
     }
 
     public LiveData<AccessToken> GetAccessToken(String username, String password , Context context)
     {
-        if(accessTokenLiveData == null)
+        if(accessTokenMutableLiveData == null)
         {
-            accessTokenLiveData = new MutableLiveData<>();
+            accessTokenMutableLiveData = new MutableLiveData<>();
             FetchAccessToken(username,password,context);
         }
-        return accessTokenLiveData;
+        return accessTokenMutableLiveData;
     }
 
     private void FetchAccessToken(String username, String password, Context context) {
-        Call<AccessToken> accessTokenCallback = tokenRepository.getAPI().GetToken(username,password);
-        accessTokenCallback.enqueue(new Callback<AccessToken>() {
+        tokenRepository.GetAccessToken(username, password, new Callback<AccessToken>() {
             AccessToken accessToken = new AccessToken();
             UserSession session = new UserSession(context);
             @Override
@@ -49,28 +48,29 @@ public class HomeViewModel extends AndroidViewModel {
                 if (response.isSuccessful() && response.body() != null) {
                     accessToken = response.body();
                     accessToken.setAuthenticated(true);
-                    accessTokenLiveData.setValue(accessToken);
+                    accessTokenMutableLiveData.setValue(accessToken);
                     session.setAuthToken(accessToken);
                 } else if (response.code() == 401) {
                     accessToken.setAuthenticated(false);
                     accessToken.setMessage("Invalid Credentials");
-                    accessTokenLiveData.setValue(accessToken);
+                    accessTokenMutableLiveData.setValue(accessToken);
                 } else {
                     accessToken.setAuthenticated(false);
                     accessToken.setMessage("Invalid Authentication");
-                    accessTokenLiveData.setValue(accessToken);
+                    accessTokenMutableLiveData.setValue(accessToken);
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<AccessToken> call, @NotNull Throwable t) {
+
                 accessToken.setAuthenticated(false);
                 if (t instanceof SocketTimeoutException) {
                     accessToken.setMessage("Request Timed Out, Abort");
                 } else {
                     accessToken.setMessage("Unknown Error Occurred");
                 }
-                accessTokenLiveData.setValue(accessToken);
+                accessTokenMutableLiveData.setValue(accessToken);
             }
         });
     }

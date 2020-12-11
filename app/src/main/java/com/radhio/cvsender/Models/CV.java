@@ -11,23 +11,23 @@ public class CV
 
     private String field_buzz_reference;
 
-    private String on_spot_update_time;
+    private long on_spot_update_time;
 
-    private String expected_salary;
+    private int expected_salary;
 
     private String applying_in;
 
-    private String graduation_year;
+    private int graduation_year;
 
     private String github_project_url;
 
-    private String on_spot_creation_time;
+    private long on_spot_creation_time;
 
     private String name_of_university;
 
     private Cv_file cv_file;
 
-    private String experience_in_months;
+    private int experience_in_months;
 
     private String full_address;
 
@@ -37,7 +37,7 @@ public class CV
 
     private String name;
 
-    private String cgpa;
+    private double cgpa;
 
     private String email;
 
@@ -61,25 +61,6 @@ public class CV
         this.field_buzz_reference = field_buzz_reference;
     }
 
-    public String getOn_spot_update_time ()
-    {
-        return on_spot_update_time;
-    }
-
-    public void setOn_spot_update_time (String on_spot_update_time)
-    {
-        this.on_spot_update_time = on_spot_update_time;
-    }
-
-    public String getExpected_salary ()
-    {
-        return expected_salary;
-    }
-
-    public void setExpected_salary (String expected_salary)
-    {
-        this.expected_salary = expected_salary;
-    }
 
     public String getApplying_in ()
     {
@@ -91,16 +72,6 @@ public class CV
         this.applying_in = applying_in;
     }
 
-    public String getGraduation_year ()
-    {
-        return graduation_year;
-    }
-
-    public void setGraduation_year (String graduation_year)
-    {
-        this.graduation_year = graduation_year;
-    }
-
     public String getGithub_project_url ()
     {
         return github_project_url;
@@ -109,16 +80,6 @@ public class CV
     public void setGithub_project_url (String github_project_url)
     {
         this.github_project_url = github_project_url;
-    }
-
-    public String getOn_spot_creation_time ()
-    {
-        return on_spot_creation_time;
-    }
-
-    public void setOn_spot_creation_time (String on_spot_creation_time)
-    {
-        this.on_spot_creation_time = on_spot_creation_time;
     }
 
     public String getName_of_university ()
@@ -139,16 +100,6 @@ public class CV
     public void setCv_file (Cv_file cv_file)
     {
         this.cv_file = cv_file;
-    }
-
-    public String getExperience_in_months ()
-    {
-        return experience_in_months;
-    }
-
-    public void setExperience_in_months (String experience_in_months)
-    {
-        this.experience_in_months = experience_in_months;
     }
 
     public String getFull_address ()
@@ -191,16 +142,6 @@ public class CV
         this.name = name;
     }
 
-    public String getCgpa ()
-    {
-        return cgpa;
-    }
-
-    public void setCgpa (String cgpa)
-    {
-        this.cgpa = cgpa;
-    }
-
     public String getEmail ()
     {
         return email;
@@ -209,6 +150,54 @@ public class CV
     public void setEmail (String email)
     {
         this.email = email;
+    }
+
+    public long getOn_spot_update_time() {
+        return on_spot_update_time;
+    }
+
+    public void setOn_spot_update_time(long on_spot_update_time) {
+        this.on_spot_update_time = on_spot_update_time;
+    }
+
+    public int getExpected_salary() {
+        return expected_salary;
+    }
+
+    public void setExpected_salary(int expected_salary) {
+        this.expected_salary = expected_salary;
+    }
+
+    public long getOn_spot_creation_time() {
+        return on_spot_creation_time;
+    }
+
+    public void setOn_spot_creation_time(long on_spot_creation_time) {
+        this.on_spot_creation_time = on_spot_creation_time;
+    }
+
+    public int getGraduation_year() {
+        return graduation_year;
+    }
+
+    public void setGraduation_year(int graduation_year) {
+        this.graduation_year = graduation_year;
+    }
+
+    public int getExperience_in_months() {
+        return experience_in_months;
+    }
+
+    public void setExperience_in_months(int experience_in_months) {
+        this.experience_in_months = experience_in_months;
+    }
+
+    public double getCgpa() {
+        return cgpa;
+    }
+
+    public void setCgpa(double cgpa) {
+        this.cgpa = cgpa;
     }
 
     @NotNull

@@ -25,34 +25,36 @@ public class ServiceGenerator {
 
     public static final String API_BASE_URL = CVSenderInfo.BASE_URL;
 
-    private static OkHttpClient okHttpClient(){
-        return new OkHttpClient.Builder()
-                .build();
-    }
+    private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(6, TimeUnit.SECONDS);
+
     private static Gson gson = new GsonBuilder()
             .setLenient()
             .create();
 
-    protected Retrofit retrofit =
+    protected static Retrofit.Builder builder =
             new Retrofit.Builder()
+                    .client(httpClient.build())
                     .baseUrl(API_BASE_URL)
-                    .client(okHttpClient())
-                    .addConverterFactory(GsonConverterFactory.create(gson))
-                    .build();
+                    .addConverterFactory(GsonConverterFactory.create(gson));
+
+    protected static Retrofit retrofit = builder.build();
 
     public Retrofit getRetrofit() {
         return retrofit;
     }
 
-//    public static <S> S CreateService(Class<S> serviceClass, final String authToken) {
-//        AuthenticationInterceptor interceptor = new AuthenticationInterceptor(authToken);
-//        if (!httpClient.interceptors().contains(interceptor)) {
-//            httpClient.addInterceptor(interceptor);
-//            builder.client(httpClient.build());
-//            retrofit = builder.build();
-//        }
-//        return retrofit.create(serviceClass);
-//    }
+    public static <S> S CreateService(Class<S> serviceClass, final String authToken) {
+        AuthenticationInterceptor interceptor = new AuthenticationInterceptor(authToken);
+        if (!httpClient.interceptors().contains(interceptor)) {
+            httpClient.addInterceptor(interceptor);
+            builder.client(httpClient.build());
+            retrofit = builder.build();
+        }
+        return retrofit.create(serviceClass);
+    }
 
 }
 

@@ -76,7 +76,7 @@
                 android:hint="@string/applicant_s_cgpa"
                 android:layout_height="wrap_content"
                 android:autofillHints=""
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:padding="20dp"/>
 
             <EditText
