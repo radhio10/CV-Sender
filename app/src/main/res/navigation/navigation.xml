@@ -24,5 +24,9 @@
     <fragment
         android:id="@+id/binaryFileFragment"
         android:name="com.radhio.cvsender.UI.BinaryFileFragment"
-        tools:layout="@layout/fragment_binary_file" />
+        tools:layout="@layout/fragment_binary_file" >
+        <argument
+            android:name="fileId"
+            app:argType="string" />
+    </fragment>
 </navigation>

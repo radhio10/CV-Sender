@@ -19,9 +19,9 @@ public class ServiceGenerator {
     public static final String API_BASE_URL = CVSenderInfo.BASE_URL;
 
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
-            .readTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(60, TimeUnit.SECONDS)
-            .connectTimeout(6, TimeUnit.SECONDS);
+            .connectTimeout(20, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS);
 
     protected static Retrofit.Builder builder =
             new Retrofit.Builder()

@@ -22,6 +22,7 @@ public class FileDetailHelper {
                 File file = new File(Objects.requireNonNull(uri.getPath()));
                 fileDetail.fileName = file.getName();
                 fileDetail.fileSize = file.length();
+                fileDetail.path = file.getPath();
             }
             // Content Scheme.
             else if (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme())) {
@@ -32,6 +33,7 @@ public class FileDetailHelper {
                     int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
                     fileDetail.fileName = returnCursor.getString(nameIndex);
                     fileDetail.fileSize = returnCursor.getLong(sizeIndex);
+                    fileDetail.path = returnCursor.getString(nameIndex);
                     returnCursor.close();
                 }
             }
@@ -43,5 +45,6 @@ public class FileDetailHelper {
     public static class FileDetail {
         public String fileName;
         public long fileSize;
+        public String path;
     }
 }

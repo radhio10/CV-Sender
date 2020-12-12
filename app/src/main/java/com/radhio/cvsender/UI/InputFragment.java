@@ -21,10 +21,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.radhio.cvsender.Models.CV;
-import com.radhio.cvsender.Models.CVFileUpload;
-import com.radhio.cvsender.Models.Cv_file;
+import com.radhio.cvsender.Models.Cv;
+import com.radhio.cvsender.Models.CvFileUpload;
+import com.radhio.cvsender.Models.CvFile;
 import com.radhio.cvsender.R;
 import com.radhio.cvsender.Session.UserSession;
 import com.radhio.cvsender.Utils.Generator;
@@ -128,19 +127,23 @@ public class InputFragment extends Fragment {
         else {
             creationTime = session.getCreationTime();
         }
-        CV cv = new CV(tsyncID,userName,userEmail,userPhone,userFullAddress,userUniversity,graduationYear,cGPA,experience,userWorkPlaceName,
-                rule,salary,userFieldBuzzRef,userProjectUrl,new Cv_file(tsyncIDCVFile),updateTime,creationTime);
-        String CVJson = new Gson().toJson(cv);
-        SubmitData(CVJson);
+        CvFile cvFile = new CvFile();
+        cvFile.setTsyncID(tsyncIDCVFile);
+        Cv cv = new Cv(tsyncID,userName,userEmail,userPhone,userFullAddress,userUniversity,graduationYear,cGPA,experience,userWorkPlaceName,
+                rule,salary,userFieldBuzzRef,userProjectUrl,cvFile,updateTime,creationTime);
+        SubmitData(cv);
     }
 
-    public void SubmitData(String cv) {
-        inputViewModel.GetFileTokenId(cv,getContext()).observe(getViewLifecycleOwner(), new Observer<CVFileUpload>() {
+    public void SubmitData(Cv cv) {
+        inputViewModel.GetFileTokenId(cv,getContext()).observe(getViewLifecycleOwner(), new Observer<CvFileUpload>() {
             @Override
-            public void onChanged(CVFileUpload cvFileUpload) {
-                if (cvFileUpload.getMessage().equals("")){
-//                    navController.navigate(R.id.binaryFileFragment);
-                    Toast.makeText(getActivity(), cvFileUpload.getId(), Toast.LENGTH_SHORT).show();
+            public void onChanged(CvFileUpload cvFileUpload) {
+                if (cvFileUpload.isSuccess()){
+                    Toast.makeText(getActivity(), cvFileUpload.getMessage(), Toast.LENGTH_SHORT).show();
+                    String id = cvFileUpload.getCvFile().getId();
+                    InputFragmentDirections.ActionInputFragmentToBinaryFileFragment
+                            action = InputFragmentDirections.actionInputFragmentToBinaryFileFragment(id);
+                    navController.navigate(action);
                 }
                 else {
                     Toast.makeText(getActivity(), cvFileUpload.getMessage(), Toast.LENGTH_SHORT).show();

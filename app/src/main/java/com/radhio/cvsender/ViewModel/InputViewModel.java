@@ -9,7 +9,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.radhio.cvsender.Models.AccessToken;
-import com.radhio.cvsender.Models.CVFileUpload;
+import com.radhio.cvsender.Models.Cv;
+import com.radhio.cvsender.Models.CvFileUpload;
 import com.radhio.cvsender.Repository.Repository;
 import com.radhio.cvsender.Session.UserSession;
 
@@ -27,14 +28,14 @@ import retrofit2.Response;
 public class InputViewModel extends AndroidViewModel {
 
     private Repository fetchIdRepository;
-    private MutableLiveData<CVFileUpload> cvFileUploadMutableLiveData;
+    private MutableLiveData<CvFileUpload> cvFileUploadMutableLiveData;
 
     public InputViewModel(@NonNull Application application) {
         super(application);
         this.fetchIdRepository = new Repository();
     }
 
-    public LiveData<CVFileUpload> GetFileTokenId(String cv, Context context)
+    public LiveData<CvFileUpload> GetFileTokenId(Cv cv, Context context)
     {
         UserSession session = new UserSession(context);
         if(cvFileUploadMutableLiveData == null)
@@ -45,15 +46,15 @@ public class InputViewModel extends AndroidViewModel {
         return cvFileUploadMutableLiveData;
     }
 
-    private void FetchFileTokenId(AccessToken token, String cv) {
-        fetchIdRepository.GetFileTokenId(token.getToken(), cv, new Callback<CVFileUpload>() {
-            CVFileUpload cvFileUpload = new CVFileUpload();
+    private void FetchFileTokenId(AccessToken token, Cv cv) {
+        fetchIdRepository.GetFileTokenId(token.getToken(), cv, new Callback<CvFileUpload>() {
+            CvFileUpload cvFileUpload = new CvFileUpload();
             @Override
-            public void onResponse(@NotNull Call<CVFileUpload> call, @NotNull Response<CVFileUpload> response) {
-                int response1 = response.code();
+            public void onResponse(@NotNull Call<CvFileUpload> call, @NotNull Response<CvFileUpload> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     cvFileUpload = response.body();
                     cvFileUploadMutableLiveData.setValue(cvFileUpload);
+                    cvFileUpload.setSuccess(true);
                 }
                 else if (response.code() == 400) {
                     cvFileUpload.setMessage("Bad Request!");
@@ -66,7 +67,7 @@ public class InputViewModel extends AndroidViewModel {
             }
 
             @Override
-            public void onFailure(@NotNull Call<CVFileUpload> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<CvFileUpload> call, @NotNull Throwable t) {
                 if (t instanceof SocketTimeoutException) {
                     cvFileUpload.setMessage("Request Timed Out, Abort");
                 } else {
