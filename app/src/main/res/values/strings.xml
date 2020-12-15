@@ -22,4 +22,5 @@
     <string name="applicant_s_personal_mail">Applicant\'s personal mail</string>
     <string name="attachment">Attachment</string>
     <string name="submit">Submit</string>
+    <string name="place_the_cv">*Place the CV in the root directory of your internal storage.*</string>
 </resources>

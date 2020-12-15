@@ -54,7 +54,6 @@ public class InputViewModel extends AndroidViewModel {
                 if (response.isSuccessful() && response.body() != null) {
                     cvFileUpload = response.body();
                     cvFileUploadMutableLiveData.setValue(cvFileUpload);
-                    cvFileUpload.setSuccess(true);
                 }
                 else if (response.code() == 400) {
                     cvFileUpload.setMessage("Bad Request!");

@@ -32,7 +32,7 @@ public class Repository {
         service.GetFileId(cv).enqueue(cvFileUploadCallback);
     }
 
-    public void UploadFile(String Token, String fileTokenId, final MultipartBody.Part cvFile, final Callback<CvFile> cvFileCallback)
+    public void UploadFile(String Token, String fileTokenId, MultipartBody.Part cvFile, final Callback<CvFile> cvFileCallback)
     {
         IFileUpload service = ServiceGenerator.CreateService(IFileUpload.class, Token);
         service.UpdateFile(fileTokenId,cvFile).enqueue(cvFileCallback);

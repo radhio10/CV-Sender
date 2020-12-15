@@ -18,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 import java.net.SocketTimeoutException;
 
 import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,7 +34,7 @@ public class BinaryFileViewModel extends AndroidViewModel {
         this.uploadFileRepository = new Repository();
     }
 
-    public LiveData<CvFile> UploadFile(String fileTokenId, final MultipartBody.Part cvFile, Context context)
+    public LiveData<CvFile> UploadFile(String fileTokenId, MultipartBody.Part cvFile, Context context)
     {
         UserSession session = new UserSession(context);
         if(cvFileMutableLiveData == null)
@@ -51,11 +50,9 @@ public class BinaryFileViewModel extends AndroidViewModel {
             CvFile cvFile = new CvFile();
             @Override
             public void onResponse(@NotNull Call<CvFile> call, @NotNull Response<CvFile> response) {
-                int code = response.code();
                 if (response.isSuccessful() && response.body() != null) {
                     cvFile = response.body();
                     cvFileMutableLiveData.setValue(cvFile);
-                    cvFile.setSuccess(true);
                 }
                 else if (response.code() == 400) {
                     cvFile.setMessage("Bad Request!");

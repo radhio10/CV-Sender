@@ -1,38 +1,36 @@
 package com.radhio.cvsender.UI;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.loader.content.CursorLoader;
 
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.radhio.cvsender.Models.CvFile;
-import com.radhio.cvsender.Models.CvFileUpload;
 import com.radhio.cvsender.R;
 import com.radhio.cvsender.Session.UserSession;
-import com.radhio.cvsender.Utils.FileDetailHelper;
+import com.radhio.cvsender.Utils.FileUtils;
 import com.radhio.cvsender.ViewModel.BinaryFileViewModel;
-import com.radhio.cvsender.ViewModel.InputViewModel;
 
 import java.io.File;
-import java.nio.file.Files;
 import java.util.Objects;
 
 import okhttp3.MediaType;
@@ -44,7 +42,8 @@ import okhttp3.RequestBody;
  */
 
 public class BinaryFileFragment extends Fragment {
-    public static final int PICK_FILE_PDF = 171;
+    public static final int FILE_PICKER_REQUEST_CODE = 1;
+    private static final long MINIMUM_FILE_SIZE = 4194304;
     LinearLayout fileLinearLayout;
     TextView filePath;
     Button pdfSubmitButton;
@@ -54,15 +53,13 @@ public class BinaryFileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_binary_file, container, false);
         session = new UserSession(requireContext());
         binaryFileViewModel = new ViewModelProvider(this).get(BinaryFileViewModel.class);
         assert getArguments() != null;
         fileTokenID = BinaryFileFragmentArgs.fromBundle(getArguments()).getFileId();
-//        fileTokenID = Integer.parseInt(fileToken);
         fileLinearLayout = view.findViewById(R.id.linear);
-        filePath = view.findViewById(R.id.file_path);
+        filePath = view.findViewById(R.id.file_name);
         pdfSubmitButton = view.findViewById(R.id.pdf_submit);
         return view;
     }
@@ -73,37 +70,44 @@ public class BinaryFileFragment extends Fragment {
         fileLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
+                    return;
+                }
                 Intent intentPDF = new Intent(Intent.ACTION_GET_CONTENT);
                 intentPDF.setType("application/pdf");
                 intentPDF.addCategory(Intent.CATEGORY_OPENABLE);
-                startActivityForResult(intentPDF, PICK_FILE_PDF);
+                startActivityForResult(intentPDF, FILE_PICKER_REQUEST_CODE);
             }
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_FILE_PDF && resultCode == Activity.RESULT_OK) {
+        if (requestCode == FILE_PICKER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 Uri pdfUri = data.getData();
                 assert pdfUri != null;
-                String a = pdfUri.getPath();
-                File file = new File(Objects.requireNonNull(pdfUri.getPath()));
-                //RequestBody filePart = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-                String size = file.getName();
-                MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse("multipart/form-data"), file));
-                String filename = FileDetailHelper.getFileDetailFromUri(getContext(), pdfUri).fileName;
-                long filesize = FileDetailHelper.getFileDetailFromUri(getContext(), pdfUri).fileSize;
-                String path = FileDetailHelper.getFileDetailFromUri(getContext(), pdfUri).path;
+                File file = FileUtils.getFile(getContext(), pdfUri);
+                long size = file.length();
+                RequestBody requestFile =
+                        RequestBody.create(file,
+                                MediaType.parse(Objects.requireNonNull(requireActivity().getApplicationContext().getContentResolver().getType(pdfUri))));
+                MultipartBody.Part filePart =
+                        MultipartBody.Part.createFormData("file", file.getName(), requestFile);
                 filePath.setText(file.getName());
-
-                filePath.setVisibility(View.VISIBLE);
-                fileLinearLayout.setVisibility(View.INVISIBLE);
                 pdfSubmitButton.setEnabled(true);
                 pdfSubmitButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        SubmitFile(fileTokenID,filePart);
+                        if (size<=MINIMUM_FILE_SIZE){
+                            SubmitFile(fileTokenID,filePart);
+                        }
+                        else {
+                            Toast.makeText(getActivity(), "Maximum file size 4MB", Toast.LENGTH_SHORT).show();
+                        }
+
                     }
                 });
             }
@@ -130,11 +134,15 @@ public class BinaryFileFragment extends Fragment {
         });
     }
 
-
-    private static String getFileSizeKiloBytes(File file) {
-        long size = file.length();
-        return (double) size / 1024 + "  kb";
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 1001) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getActivity(), "Granted", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getActivity(), "not granted", Toast.LENGTH_SHORT).show();
+                requireActivity().finish();
+            }
+        }
     }
-
-
 }
