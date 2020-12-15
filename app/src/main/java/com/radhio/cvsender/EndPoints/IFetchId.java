@@ -16,6 +16,6 @@ public interface IFetchId {
             "Accept: */*",
             "Content-Type: application/json"
     })
-    @POST("api/v0/recruiting-entities/")
+    @POST("api/v1/recruiting-entities/")
     Call<CvFileUpload> GetFileId(@Body Cv cv);
 }
